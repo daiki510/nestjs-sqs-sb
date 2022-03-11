@@ -1,0 +1,39 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/sqs-producer/src",
+  "monorepo": true,
+  "root": "apps/sqs-producer",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/sqs-producer/tsconfig.app.json"
+  },
+  "projects": {
+    "sqs-producer": {
+      "type": "application",
+      "root": "apps/sqs-producer",
+      "entryFile": "main",
+      "sourceRoot": "apps/sqs-producer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/sqs-producer/tsconfig.app.json"
+      }
+    },
+    "sqs-consumer": {
+      "type": "application",
+      "root": "apps/sqs-consumer",
+      "entryFile": "main",
+      "sourceRoot": "apps/sqs-consumer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/sqs-consumer/tsconfig.app.json"
+      }
+    },
+    "commons": {
+      "type": "library",
+      "root": "libs/commons",
+      "entryFile": "index",
+      "sourceRoot": "libs/commons/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/commons/tsconfig.lib.json"
+      }
+    }
+  }
+}
