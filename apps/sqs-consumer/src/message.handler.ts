@@ -10,5 +10,6 @@ export class MessageHandler {
     await sleep(1000);
     const obj = JSON.parse(message.Body) as Message;
     Logger.log(obj, MessageHandler.name);
+    Logger.log('==============================');
   }
 }

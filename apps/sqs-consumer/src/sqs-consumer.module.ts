@@ -21,6 +21,8 @@ import { MessageHandler } from './message.handler';
               name: 'test-queue',
               queueUrl: queueUrl,
               region: region,
+              MaxNumberOfMessages: 10,
+              WaitTimeSeconds: 20,
             },
           ],
           producers: [],
