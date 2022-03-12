@@ -32,7 +32,7 @@ describe('SqsProducerController', () => {
       const message = 'msg';
 
       // exercise
-      const actual = await sqsProducerController.sendQueue(message);
+      const actual = await sqsProducerController.process(message);
 
       // verify
       expect(actual).toBe('ok');
@@ -45,7 +45,7 @@ describe('SqsProducerController', () => {
       const message = '';
 
       // exercise
-      const actual = await sqsProducerController.sendQueue(message);
+      const actual = await sqsProducerController.process(message);
 
       // verify
       expect(actual).toBe('ok');
