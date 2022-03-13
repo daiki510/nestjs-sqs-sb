@@ -7,8 +7,6 @@ export class SqsProducerController {
 
   @Post()
   async process(@Body() message: string) {
-    await this.offerProccesor.process(message);
-
-    return 'ok';
+    return await this.offerProccesor.process(message);
   }
 }
