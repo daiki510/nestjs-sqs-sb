@@ -1,23 +1,12 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { SqsService } from '@ssut/nestjs-sqs';
-import { Message } from '@app/commons';
+import { Controller, Post, Body } from '@nestjs/common';
+import { OfferProccesor } from './sqs-producer/offer.proccesor';
 
 @Controller()
 export class SqsProducerController {
-  constructor(private readonly sqsService: SqsService) {}
+  constructor(private readonly offerProccesor: OfferProccesor) {}
 
-  @Get()
-  async sendQueue(@Query('message') message: string) {
-    const data: Message = {
-      date: (+new Date()).toString(),
-      message: message || 'hoge',
-    };
-
-    await this.sqsService.send('test-queue', {
-      id: data.date,
-      body: data,
-    });
-
-    return 'ok';
+  @Post()
+  async process(@Body() message: string) {
+    return await this.offerProccesor.process(message);
   }
 }

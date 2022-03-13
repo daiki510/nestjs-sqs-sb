@@ -1,55 +1,33 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SqsService } from '@ssut/nestjs-sqs';
 import { SqsProducerController } from '../src/sqs-producer.controller';
+import { OfferProccesor } from '../src/sqs-producer/offer.proccesor';
 
 describe('SqsProducerController', () => {
   let sqsProducerController: SqsProducerController;
+  let offerProccesor: OfferProccesor;
   let sqsService: SqsService;
 
   beforeEach(async () => {
-    jest.useFakeTimers().setSystemTime(new Date(2021, 0, 1, 1, 1, 1));
-
     const app: TestingModule = await Test.createTestingModule({
       controllers: [SqsProducerController],
-      providers: [SqsService],
+      providers: [SqsService, OfferProccesor],
     })
       .overrideProvider(SqsService)
       .useValue({ send: jest.fn() })
       .compile();
 
+    offerProccesor = app.get<OfferProccesor>(OfferProccesor);
     sqsProducerController = app.get<SqsProducerController>(SqsProducerController);
     sqsService = app.get<SqsService>(SqsService);
   });
 
-  afterEach(() => {
-    jest.useRealTimers();
-  });
+  describe('process', () => {
+    it('should return an message of ok', async () => {
+      const result = 'ok';
+      jest.spyOn(offerProccesor, 'process').mockResolvedValue(result);
 
-  describe('root', () => {
-    it('message not empty', async () => {
-      // setup
-      const date = (+new Date(2021, 0, 1, 1, 1, 1)).toString();
-      const message = 'msg';
-
-      // exercise
-      const actual = await sqsProducerController.sendQueue(message);
-
-      // verify
-      expect(actual).toBe('ok');
-      expect(sqsService.send).toHaveBeenCalledWith('test-queue', { id: date, body: { date, message } });
-    });
-
-    it('message empty', async () => {
-      // setup
-      const date = (+new Date(2021, 0, 1, 1, 1, 1)).toString();
-      const message = '';
-
-      // exercise
-      const actual = await sqsProducerController.sendQueue(message);
-
-      // verify
-      expect(actual).toBe('ok');
-      expect(sqsService.send).toHaveBeenCalledWith('test-queue', { id: date, body: { date, message: 'hoge' } });
+      expect(await sqsProducerController.process('')).toBe(result);
     });
   });
 });

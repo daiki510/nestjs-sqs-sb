@@ -2,6 +2,7 @@ import { Module, Logger } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SqsModule } from '@ssut/nestjs-sqs';
 import { SqsProducerController } from './sqs-producer.controller';
+import { OfferProccesor } from './sqs-producer/offer.proccesor';
 
 @Module({
   imports: [
@@ -29,6 +30,6 @@ import { SqsProducerController } from './sqs-producer.controller';
     }),
   ],
   controllers: [SqsProducerController],
-  providers: [],
+  providers: [OfferProccesor],
 })
 export class SqsProducerModule {}
